@@ -1,3 +1,8 @@
+/** 
+ * Simple dashboard of some widgets to show data loading, or failing to load. 
+ * This is the test component for the <Request> and useClient APIs
+ */
+
 import React from 'react';
 
 import Box from '@material-ui/core/Box';
