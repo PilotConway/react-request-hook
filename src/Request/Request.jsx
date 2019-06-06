@@ -82,6 +82,6 @@ Request.defaultProps = {
 };
 
 export default function Request({ endpoint, params, options, children }) {
-  const [data, loading, error] = useClient(endpoint);
-  return children({ data, loading, error });
+  const [data, loading, error, getNext, getPrevious] = useClient(endpoint);
+  return children({ data, loading, error, getNext, getPrevious });
 }

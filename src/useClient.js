@@ -23,12 +23,34 @@ export default function useClient(path, emptyValue = []) {
   const [value, setValue] = React.useState(emptyValue);
   const [error, setError] = React.useState();
   const [isLoading, setLoading] = React.useState(false);
+  const [nextLink, setNextLink] = React.useState();
+  const [previousLink, setPreviousLink] = React.useState();
+  const [currentEndpoint, setCurrentEndpoint] = React.useState(path);
+
+  let getNext = null;
+  if (nextLink) {
+    getNext = () => {
+      setCurrentEndpoint(nextLink);
+    };
+  }
+
+  let getPrevious = null;
+  if (previousLink) {
+    getPrevious = () => {
+      setCurrentEndpoint(previousLink);
+    };
+  }
+
   React.useEffect(() => {
     const load = async () => {
       setLoading(true);
       try {
-        const value = await client.get(path);
-        setValue(value);
+        const response = await client.get(currentEndpoint);
+        setValue(response.data);
+
+        // If we aren't a paged response, then these will be null
+        setNextLink(response.nextLink);
+        setPreviousLink(response.previousLink);
       } catch (error) {
         setError(error);
       } finally {
@@ -36,6 +58,6 @@ export default function useClient(path, emptyValue = []) {
       }
     };
     load();
-  }, [path]);
-  return [value, isLoading, error];
+  }, [path, currentEndpoint]);
+  return [value, isLoading, error, getNext, getPrevious];
 }
