@@ -35,7 +35,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useClient from './useClient';
+import useClient from '../useClient';
 
 Request.propTypes = {
   /**
