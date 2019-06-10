@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Banner from "./Banner";
+import Banner from '../Banner';
 
 export default function ReposList({ repos, isLoading, error }) {
   if (isLoading) {

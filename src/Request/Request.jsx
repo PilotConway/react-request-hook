@@ -16,9 +16,9 @@
  *
  * ## Pagination
  *
- * For paginated endpoints, `<Request>` provides two functions to traverse the pages, `getNext` and `getPrevious`.
- * You can call these functions to get the next or previous pages. Under the hood it's using the Link header
- * urls to run a new request.
+ * For paginated endpoints, `<Request>` provides a link property on the object passed to the child
+ * function. You can call these functions to get the first, last, next or previous pages.
+ * Under the hood it's using the Link header urls to run a new request to get to that page.
  *
  * ## TODO
  *
@@ -32,7 +32,7 @@
  * which backend server (primary or secondary) we are connected to.
  *
  */
-import React from 'react';
+// import React from 'react';
 import PropTypes from 'prop-types';
 
 import useClient from '../useClient';
@@ -53,9 +53,13 @@ Request.propTypes = {
    *   - loading (boolean): True if request is loading.
    *   - error (object): Error object if the request errors, otherwise, this will be null.
    *   - data (array | object): The data returned from the server.
-   *   - getNext (function): Function that when called will get the next page of results.
-   *   - getPrevious (function): Function that when called will get the previous page of results.
-   *   - client (Client): The client object used to make the request. See src/client/.
+   *   - links (object):  Object containing links for pagination functions. Every property will
+   *                      either be null if that link doesn't exist, or a function that will go
+   *                      to that page and cause `data` to reload.
+   *     - getFirst (function): Function that when called will get the first page of results.
+   *     - getLast (function): Function that when called will get the last page of results.
+   *     - getNext (function): Function that when called will get the next page of results.
+   *     - getPrevious (function): Function that when called will get the previous page of results.
    */
   children: PropTypes.func.isRequired,
 
@@ -82,6 +86,6 @@ Request.defaultProps = {
 };
 
 export default function Request({ endpoint, params, options, children }) {
-  const [data, loading, error, getNext, getPrevious] = useClient(endpoint);
-  return children({ data, loading, error, getNext, getPrevious });
+  const [data, loading, error, links] = useClient(endpoint);
+  return children({ data, loading, error, links });
 }

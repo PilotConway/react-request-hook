@@ -10,16 +10,13 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 
 import UsersCard, { UsersList } from './UsersCard';
-import ReposList from './ReposList';
+import ReposCard from './ReposCard';
 
 import useClient from '../useClient';
 
 export default function Dashboard() {
   const [errorUsers, errorUsersLoading, errorUsersError] = useClient(
     `https://api.github.com/usersdsafasdfa?per_page=5`,
-  );
-  const [repos, reposLoading, reposError] = useClient(
-    `https://api.github.com/orgs/storybookjs/repos?per_page=5`,
   );
   return (
     <Box
@@ -33,14 +30,7 @@ export default function Dashboard() {
       </Box>
 
       <Box width={{ xs: '100%', md: 350 }} m={2}>
-        <Card>
-          <CardHeader title="Repositories" />
-          <ReposList
-            repos={repos}
-            isLoading={reposLoading}
-            error={reposError}
-          />
-        </Card>
+        <ReposCard />
       </Box>
 
       <Box width={{ xs: '100%', md: 350 }} m={2}>
