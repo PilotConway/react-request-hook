@@ -3,10 +3,10 @@
  * The hook returns the value and a loading boolean and an error
  * value if one occurs.
  *
- * ## Usgae
+ * ## Usage
  *
  * ```
- * const [value, isLoading, error] = useClient('/users');
+ * const [value, isLoading, error, links, clients] = useClient('/users');
  *
  * ## TODO:
  *  - [ ] Currently only accepts full urls as the endpoint.
@@ -19,7 +19,7 @@
 import React from 'react';
 import client from './client';
 
-export default function useClient(path, emptyValue = []) {
+export default function useEndpointData(path, emptyValue = []) {
   const [value, setValue] = React.useState(emptyValue);
   const [error, setError] = React.useState();
   const [isLoading, setLoading] = React.useState(false);
@@ -80,5 +80,11 @@ export default function useClient(path, emptyValue = []) {
     };
     load();
   }, [path, currentEndpoint]);
-  return [value, isLoading, error, { getNext, getPrevious, getFirst, getLast }];
+  return [
+    value,
+    isLoading,
+    error,
+    { getNext, getPrevious, getFirst, getLast },
+    client,
+  ];
 }
