@@ -28,9 +28,11 @@ export const getRequest = path =>
  * @return {array} [nextLink, previousLink] urls.
  */
 function processLinks(response) {
-  let nextLink = null;
-  let previousLink = null;
   const linkHeader = response.xhr.getResponseHeader('Link');
+  // Set the links to null by default. If they exist on the link header then they will
+  // be added.
+  let links = { first: null, last: null, prev: null, next: null };
+
   if (linkHeader) {
     console.info(linkHeader);
 
@@ -39,7 +41,7 @@ function processLinks(response) {
      * <https://api.github.com/users?per_page=5&since=5>; rel="next", <https://api.github.com/users{?since}>; rel="first"
      */
     const rawLinks = linkHeader.split(',');
-    const parsedLinks = rawLinks.reduce((acc, link) => {
+    links = rawLinks.reduce((acc, link) => {
       const matches = link.match(linkParseRegex);
 
       console.info('Matched', matches);
@@ -47,25 +49,20 @@ function processLinks(response) {
       console.info(acc);
       // Sets something like next: url, or first: url
       return acc;
-    }, {});
-
-    // Now grab the next/previous links if they exist, or set to null
-    nextLink = parsedLinks.next || null;
-    previousLink = parsedLinks.prev || null;
+    }, links);
   }
-  return [nextLink, previousLink];
+  return links;
 }
 
 const client = {
   get: async path => {
     const response = await getRequest(path).toPromise();
-    const [nextLink, previousLink] = processLinks(response);
+    const links = processLinks(response);
 
     return {
       data: response.response,
       rawResponse: response,
-      nextLink,
-      previousLink,
+      links,
     };
   },
 };
