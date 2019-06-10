@@ -23,9 +23,14 @@ export default function useClient(path, emptyValue = []) {
   const [value, setValue] = React.useState(emptyValue);
   const [error, setError] = React.useState();
   const [isLoading, setLoading] = React.useState(false);
+  const [currentEndpoint, setCurrentEndpoint] = React.useState(path);
+
+  // Links for paginated routes. These will be set to null if the links don't exist
+  // on the API response.
   const [nextLink, setNextLink] = React.useState();
   const [previousLink, setPreviousLink] = React.useState();
-  const [currentEndpoint, setCurrentEndpoint] = React.useState(path);
+  const [firstLink, setFirstLink] = React.useState();
+  const [lastLink, setLastLink] = React.useState();
 
   let getNext = null;
   if (nextLink) {
@@ -41,6 +46,20 @@ export default function useClient(path, emptyValue = []) {
     };
   }
 
+  let getFirst = null;
+  if (firstLink) {
+    getFirst = () => {
+      setCurrentEndpoint(firstLink);
+    };
+  }
+
+  let getLast = null;
+  if (lastLink) {
+    getLast = () => {
+      setCurrentEndpoint(lastLink);
+    };
+  }
+
   React.useEffect(() => {
     const load = async () => {
       setLoading(true);
@@ -49,8 +68,10 @@ export default function useClient(path, emptyValue = []) {
         setValue(response.data);
 
         // If we aren't a paged response, then these will be null
-        setNextLink(response.nextLink);
-        setPreviousLink(response.previousLink);
+        setNextLink(response.links.next);
+        setPreviousLink(response.links.prev);
+        setFirstLink(response.links.first);
+        setLastLink(response.links.last);
       } catch (error) {
         setError(error);
       } finally {
@@ -59,5 +80,5 @@ export default function useClient(path, emptyValue = []) {
     };
     load();
   }, [path, currentEndpoint]);
-  return [value, isLoading, error, getNext, getPrevious];
+  return [value, isLoading, error, { getNext, getPrevious, getFirst, getLast }];
 }
