@@ -19,7 +19,7 @@ export default function UsersCard() {
         {({ loading, error, data, links }) => (
           <React.Fragment>
             <UsersList users={data} isLoading={loading} error={error} />
-            <Pagination links={links} />
+            {!loading && <Pagination links={links} />}
           </React.Fragment>
         )}
       </Request>

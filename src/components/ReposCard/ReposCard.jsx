@@ -19,7 +19,7 @@ export default function ReposCard() {
         {({ loading, error, data, links }) => (
           <React.Fragment>
             <ReposList repos={data} isLoading={loading} error={error} />
-            <Pagination links={links} />
+            {!loading && <Pagination links={links} />}
           </React.Fragment>
         )}
       </Request>
