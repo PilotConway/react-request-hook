@@ -1,5 +1,5 @@
 /**
- * Test component to display a card of users.
+ * Test component to display a card of repos.
  */
 
 import React from 'react';
@@ -9,16 +9,16 @@ import CardHeader from '@material-ui/core/CardHeader';
 
 import Pagination from '../Pagination';
 import Request from '../../Request';
-import UsersList from './UsersList';
+import ReposList from './ReposList';
 
-export default function UsersCard() {
+export default function ReposCard() {
   return (
     <Card>
-      <CardHeader title="Users" />
-      <Request endpoint="https://api.github.com/users?per_page=5">
+      <CardHeader title="Repositories" />
+      <Request endpoint="https://api.github.com/orgs/storybookjs/repos?per_page=5">
         {({ loading, error, data, links }) => (
           <React.Fragment>
-            <UsersList users={data} isLoading={loading} error={error} />
+            <ReposList repos={data} isLoading={loading} error={error} />
             <Pagination links={links} />
           </React.Fragment>
         )}
