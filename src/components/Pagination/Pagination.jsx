@@ -4,7 +4,8 @@
  *
  * Renders null if there are no links.
  *
- * Will hide any buttons that do not have links.
+ * Links that are null have their buttons disabled.
+ *
  */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -39,14 +40,38 @@ export default function Pagination({ links }) {
       justifyContent="space-between"
       width="100%"
     >
-      {links.getFirst && (
-        <Button onClick={() => links.getFirst()}>First</Button>
-      )}
-      {links.getPrevious && (
-        <Button onClick={() => links.getPrevious()}>Previous</Button>
-      )}
-      {links.getNext && <Button onClick={() => links.getNext()}>Next</Button>}
-      {links.getLast && <Button onClick={() => links.getLast()}>Last</Button>}
+      <Box width={0.2}>
+        <Button
+          disabled={links.getFirst === null}
+          onClick={() => links.getFirst()}
+        >
+          First
+        </Button>
+      </Box>
+      <Box width={0.3}>
+        <Button
+          disabled={links.getPrevious === null}
+          onClick={() => links.getPrevious()}
+        >
+          Previous
+        </Button>
+      </Box>
+      <Box width={0.3}>
+        <Button
+          disabled={links.getNext === null}
+          onClick={() => links.getNext()}
+        >
+          Next
+        </Button>
+      </Box>
+      <Box width={0.2}>
+        <Button
+          disabled={links.getLast === null}
+          onClick={() => links.getLast()}
+        >
+          Last
+        </Button>
+      </Box>
     </Box>
   );
 }
