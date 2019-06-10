@@ -24,10 +24,10 @@ Pagination.propTypes = {
 export default function Pagination({ links }) {
   // Don't render if there are no links.
   if (
-    link.getFirst === null &&
-    link.getLast === null &&
-    link.getNext === null &&
-    link.getPrevious === null
+    links.getFirst === null &&
+    links.getLast === null &&
+    links.getNext === null &&
+    links.getPrevious === null
   ) {
     return null;
   }
