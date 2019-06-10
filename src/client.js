@@ -1,5 +1,5 @@
 import { ajax } from 'rxjs/ajax';
-import { catchError, delay, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { throwError, of } from 'rxjs';
 
 const linkParseRegex = /<(.+?)>; rel="(.*)"/;
