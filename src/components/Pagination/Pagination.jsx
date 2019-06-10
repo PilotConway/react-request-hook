@@ -10,6 +10,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import LastPageIcon from '@material-ui/icons/LastPage';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
@@ -45,6 +50,7 @@ export default function Pagination({ links }) {
           disabled={links.getFirst === null}
           onClick={() => links.getFirst()}
         >
+          <FirstPageIcon />
           First
         </Button>
       </Box>
@@ -53,6 +59,7 @@ export default function Pagination({ links }) {
           disabled={links.getPrevious === null}
           onClick={() => links.getPrevious()}
         >
+          <ChevronLeftIcon />
           Previous
         </Button>
       </Box>
@@ -62,6 +69,7 @@ export default function Pagination({ links }) {
           onClick={() => links.getNext()}
         >
           Next
+          <ChevronRightIcon />
         </Button>
       </Box>
       <Box width={0.2}>
@@ -70,6 +78,7 @@ export default function Pagination({ links }) {
           onClick={() => links.getLast()}
         >
           Last
+          <LastPageIcon />
         </Button>
       </Box>
     </Box>
