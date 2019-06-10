@@ -1,3 +1,11 @@
+/**
+ * This component renders page buttons, and on click will call the functions
+ * to traverse to the request page.
+ *
+ * Renders null if there are no links.
+ *
+ * Will hide any buttons that do not have links.
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -14,6 +22,16 @@ Pagination.propTypes = {
 };
 
 export default function Pagination({ links }) {
+  // Don't render if there are no links.
+  if (
+    link.getFirst === null &&
+    link.getLast === null &&
+    link.getNext === null &&
+    link.getPrevious === null
+  ) {
+    return null;
+  }
+
   return (
     <Box
       display="flex"
