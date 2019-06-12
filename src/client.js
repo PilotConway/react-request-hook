@@ -1,12 +1,11 @@
 import { ajax } from 'rxjs/ajax';
-import { catchError, delay, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { throwError, of } from 'rxjs';
 
 const linkParseRegex = /<(.+?)>; rel="(.*)"/;
 
 export const getRequest = path =>
   ajax(path).pipe(
-    delay(3000), // For testing the loader
     map(response => {
       if (response === null) {
         return throwError('API Timed out', response);
@@ -38,7 +37,7 @@ function processLinks(response) {
 
     /*
      * example header:
-     * <https://api.github.com/users?per_page=5&since=5>; rel="next", <https://api.github.com/users{?since}>; rel="first"
+     * <https://api.github.com/users?per_page=5&since=5>; rel="next", <https://api.github.com/users?since=0>; rel="first"
      */
     const rawLinks = linkHeader.split(',');
     links = rawLinks.reduce((acc, link) => {

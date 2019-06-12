@@ -12,10 +12,10 @@ import CardHeader from '@material-ui/core/CardHeader';
 import UsersCard, { UsersList } from './UsersCard';
 import ReposCard from './ReposCard';
 
-import useClient from '../useClient';
+import useEndpointData from '../useEndpointData';
 
 export default function Dashboard() {
-  const [errorUsers, errorUsersLoading, errorUsersError] = useClient(
+  const [users, loading, error] = useEndpointData(
     `https://api.github.com/usersdsafasdfa?per_page=5`,
   );
   return (
@@ -36,11 +36,7 @@ export default function Dashboard() {
       <Box width={{ xs: '100%', md: 350 }} m={2}>
         <Card>
           <CardHeader title="Users with Error" />
-          <UsersList
-            users={errorUsers}
-            isLoading={errorUsersLoading}
-            error={errorUsersError}
-          />
+          <UsersList users={users} isLoading={loading} error={error} />
         </Card>
       </Box>
     </Box>

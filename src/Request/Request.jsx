@@ -2,6 +2,9 @@
  * Request runs a GET request to the server and returns the data using the render prop pattern.
  * You can also run other CRUD operations using the provided client object.
  *
+ * This is a simple wrapper around the `useEndpointData` hook that provides the response as a
+ * render prop.
+ *
  * ## Usage:
  *
  * ```
@@ -35,7 +38,7 @@
 // import React from 'react';
 import PropTypes from 'prop-types';
 
-import useClient from '../useClient';
+import useEndpointData from '../useEndpointData';
 
 Request.propTypes = {
   /**
@@ -60,6 +63,8 @@ Request.propTypes = {
    *     - getLast (function): Function that when called will get the last page of results.
    *     - getNext (function): Function that when called will get the next page of results.
    *     - getPrevious (function): Function that when called will get the previous page of results.
+   *   - client (object): The raw client object. Can be used to make other client requests like
+   *                      a put/post/delete.
    */
   children: PropTypes.func.isRequired,
 
@@ -86,6 +91,6 @@ Request.defaultProps = {
 };
 
 export default function Request({ endpoint, params, options, children }) {
-  const [data, loading, error, links] = useClient(endpoint);
-  return children({ data, loading, error, links });
+  const [data, loading, error, links, client] = useEndpointData(endpoint);
+  return children({ data, loading, error, links, client });
 }
