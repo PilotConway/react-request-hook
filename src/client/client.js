@@ -1,24 +1,6 @@
-import { ajax } from 'rxjs/ajax';
-import { catchError, map } from 'rxjs/operators';
-import { throwError, of } from 'rxjs';
+import getRequest from './getRequest';
 
 const linkParseRegex = /<(.+?)>; rel="(.*)"/;
-
-export const getRequest = path =>
-  ajax(path).pipe(
-    map(response => {
-      if (response === null) {
-        return throwError('API Timed out', response);
-      }
-      console.log('api response: ', response);
-      return response;
-    }),
-    catchError(error => {
-      console.log(error);
-      console.error('api error: ', error.response);
-      return of(error);
-    }),
-  );
 
 /**
  * Processes the Link header and splits the data into the two links
@@ -33,8 +15,6 @@ function processLinks(response) {
   let links = { first: null, last: null, prev: null, next: null };
 
   if (linkHeader) {
-    console.info(linkHeader);
-
     /*
      * example header:
      * <https://api.github.com/users?per_page=5&since=5>; rel="next", <https://api.github.com/users?since=0>; rel="first"
@@ -43,10 +23,9 @@ function processLinks(response) {
     links = rawLinks.reduce((acc, link) => {
       const matches = link.match(linkParseRegex);
 
-      console.info('Matched', matches);
-      acc[matches[2]] = matches[1];
-      console.info(acc);
       // Sets something like next: url, or first: url
+      acc[matches[2]] = matches[1];
+
       return acc;
     }, links);
   }
@@ -54,6 +33,19 @@ function processLinks(response) {
 }
 
 const client = {
+  /**
+   * Runs a get operation on the provided path and returns the data.
+   *
+   * @param {object|array} data The data from the server.
+   * @param {AjaxResponse} rawResponse The RxJS AJAX Response object from the server.
+   * @param {object} links The links object containing any link header URLS. All properties are
+   * guranteed to be present, but will be set to null if the link does not exist in the header.
+   * Otherwise, it will be set to the string URL value.
+   * @param {string} links.next The URL to get the next page.
+   * @param {string} links.prev The URL to get the previous page.
+   * @param {string} links.first The URL to get the first page.
+   * @param {string} links.last The URL to get the last page.
+   */
   get: async path => {
     const response = await getRequest(path).toPromise();
     const links = processLinks(response);
