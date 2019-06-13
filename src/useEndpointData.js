@@ -19,8 +19,15 @@
 import React from 'react';
 import client from './client';
 
-export default function useEndpointData(path, emptyValue = []) {
-  const [value, setValue] = React.useState(emptyValue);
+const defaultOptions = {
+  // TODO: deprecate: this doesn't really make sense, just make it null
+  emptyValue: [],
+  params: {},
+};
+
+export default function useEndpointData(path, options) {
+  const computedOptions = { ...defaultOptions, ...options };
+  const [value, setValue] = React.useState(computedOptions.emptyValue);
   const [error, setError] = React.useState();
   const [isLoading, setLoading] = React.useState(false);
   const [currentEndpoint, setCurrentEndpoint] = React.useState(path);

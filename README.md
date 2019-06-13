@@ -64,6 +64,22 @@ information about the properties supplied.
 
 ### Hooks Method
 
+The library provides the `useEndpointData` hook to make a GET request to an endpoint and returns the same data as the `Request` component function above. The `Request` component is actually just a shallow wrapper call to the `useEndpointData` hook.
+
+```js
+import React from 'react';
+import useEndpointData from 'src/useEndpointData`;
+
+export default function MyComponent() {
+  const [ data, loading, error, links, client ] = useEndpointHooks('/users');
+  return (
+    ... your component jsx
+  )
+}
+```
+
+See [`useEndpointData`](#useEndpointData) for details on the hook parameters and return data.
+
 ## API
 
 ### `Client`
@@ -73,6 +89,22 @@ information about the properties supplied.
 ### `<ClientProvider>`
 
 ### `useEndpointData`
+
+This is a hook to perform a GET request to retrieve data.
+
+#### Parameters
+
+`useEndpointData` takes two parameters, the require endpoint path and an optional options object.
+
+- `path` _string_ The relative path or full URL of the endpoint to make the GET request. If you
+  provide a realtive path, then the hook will try to append the path to the current hostname. If
+  `<ClientProvider>` was used, then it will use the client and appent to the base url configured in
+  that client instance.
+- `options` _object_ Object to provide options to the endpoint. It can contain any of the following
+  properties.
+  - `params` _object_ Key/value pair of parameters to append to the URL. Eg `{ per_page: 5 }` to
+    append `?per_page=5` to the url.
+  - `headers` _object_ Key/value pairs of headers to attach to the request.
 
 ### `<Request>`
 
