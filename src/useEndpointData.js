@@ -16,7 +16,8 @@
  * ```
  */
 import React from 'react';
-import { createClient } from './client';
+
+import { ClientContext } from './ClientProvider';
 
 const defaultOptions = {
   // TODO: deprecate: this doesn't really make sense, just make it null
@@ -39,7 +40,7 @@ export default function useEndpointData(path, options) {
   const [lastLink, setLastLink] = React.useState();
 
   // Get client from context or create the client.
-  const client = createClient();
+  let client = React.useContext(ClientContext);
 
   let getNext = null;
   if (nextLink) {
