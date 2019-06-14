@@ -13,11 +13,10 @@
  *  - [ ] It should also allow for editing headers
  *  - [ ] Allow for passing paramas as an object.
  *  - [ ] Can we do a put/post/delete with this?
- *  - [ ] Should return the client object  maybe? Get it from useContext
  * ```
  */
 import React from 'react';
-import client from './client';
+import { createClient } from './client';
 
 const defaultOptions = {
   // TODO: deprecate: this doesn't really make sense, just make it null
@@ -38,6 +37,9 @@ export default function useEndpointData(path, options) {
   const [previousLink, setPreviousLink] = React.useState();
   const [firstLink, setFirstLink] = React.useState();
   const [lastLink, setLastLink] = React.useState();
+
+  // Get client from context or create the client.
+  const client = createClient();
 
   let getNext = null;
   if (nextLink) {
@@ -86,7 +88,7 @@ export default function useEndpointData(path, options) {
       }
     };
     load();
-  }, [path, currentEndpoint]);
+  }, [path, currentEndpoint, client]);
   return [
     value,
     isLoading,

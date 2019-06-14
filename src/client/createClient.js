@@ -1,5 +1,4 @@
 import client from './client';
-import { buildFailureTestResult } from '@jest/test-result';
 
 /**
  * This is a wrapper around client that allows for a base URL to be set once and then use realtive
