@@ -15,7 +15,7 @@ export default function ReposCard() {
   return (
     <Card>
       <CardHeader title="Repositories" />
-      <Request endpoint="https://api.github.com/orgs/storybookjs/repos?per_page=5">
+      <Request endpoint="/orgs/storybookjs/repos?per_page=5">
         {({ loading, error, data, links }) => (
           <React.Fragment>
             <ReposList repos={data} isLoading={loading} error={error} />

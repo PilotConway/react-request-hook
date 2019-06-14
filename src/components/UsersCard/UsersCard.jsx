@@ -15,7 +15,7 @@ export default function UsersCard() {
   return (
     <Card>
       <CardHeader title="Users" />
-      <Request endpoint="https://api.github.com/users?per_page=5">
+      <Request endpoint="/users?per_page=5">
         {({ loading, error, data, links }) => (
           <React.Fragment>
             <UsersList users={data} isLoading={loading} error={error} />
