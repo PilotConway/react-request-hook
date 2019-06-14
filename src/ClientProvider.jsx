@@ -1,2 +1,6 @@
-// TODO this is where we can setup a client object with the domain, headers, and other
-// options, then be able to retrieve the client in the useClient hook later on.
+import React from 'react';
+import { createClient } from './client';
+
+export const ClientContext = React.createContext(createClient());
+
+export default ClientContext.Provider;
