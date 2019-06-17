@@ -8,12 +8,9 @@ const getRequest = path =>
       if (response === null) {
         return throwError('API Timed out', response);
       }
-      console.log('api response: ', response);
       return response;
     }),
     catchError(error => {
-      console.log(error);
-      console.error('api error: ', error.response);
       return of(error);
     }),
   );
