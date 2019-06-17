@@ -3,7 +3,6 @@ workflow "Build on Pull Request" {
   on = "pull_request"
 }
 
-action "Codecov Action" {
-  uses = "Atrox/codecov-action@v0.1.3"
-  secrets = ["API_CLIENT_CODECOV_TOKEN"]
+action "eslint" {
+  uses = "gimenete/eslint-action@1.0"
 }
