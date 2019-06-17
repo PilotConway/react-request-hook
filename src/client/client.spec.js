@@ -1,15 +1,15 @@
 import client from './client';
-// Require get request import for mocks to work
-// eslint-disable-next-line no-unused-vars
-import getRequest from './getRequest';
+import nock from 'nock';
 
-// SEE __mocks__/getRequest for which endpoint paths result in what types of
-// responses from the getRequest().toPromise() method.
-jest.mock('./getRequest');
+// make sure no requests are actually sent
+nock.disableNetConnect();
 
 describe('raw client', () => {
   it('calls getRequest and returns data', async () => {
-    const response = await client.get('foo');
+    nock('http://localhost')
+      .get('/foo')
+      .reply(200, { bar: 'baz' });
+    const response = await client.get('http://localhost/foo');
 
     expect(response.data).toEqual({ bar: 'baz' });
     expect(response.links).toEqual({
@@ -20,30 +20,64 @@ describe('raw client', () => {
     });
   });
 
-  it('rejects when when an error occurs', async () => {
-    expect(client.get('/404')).rejects.toThrow();
+  it('responds with an error response when when an error from the server occurs', async () => {
+    nock('http://localhost')
+      .get('/404')
+      .reply(404, { message: 'Not Found' });
+    const response = await client.get('http://localhost/404');
+    expect(response.ok).toBe(false);
+    expect(response.data).toEqual({ message: 'Not Found' });
+    expect(response.status).toEqual(404);
+    expect(response.statusText).toEqual('Not Found');
+  });
+
+  it('Has statusText set to ajax error messsage when no message is in the response', async () => {
+    nock('http://localhost')
+      .get('/500')
+      .reply(500);
+    const response = await client.get('http://localhost/500');
+    expect(response.ok).toBe(false);
+    expect(response.data).toEqual(null);
+    expect(response.status).toEqual(500);
+    expect(response.statusText).toEqual('ajax error 500');
   });
 
   describe('links', () => {
     it('returns next link', async () => {
+      nock('http://localhost')
+        .get('/link/next')
+        .reply(200, {}, { Link: '<https://example.com/foo?page=7>; rel="next"' });
+
       const response = await client.get('/link/next');
 
       expect(response.links.next).toEqual('https://example.com/foo?page=7');
     });
 
     it('returns previous link', async () => {
+      nock('http://localhost')
+        .get('/link/prev')
+        .reply(200, {}, { Link: '<https://example.com/foo?page=5>; rel="prev"' });
+
       const response = await client.get('/link/prev');
 
       expect(response.links.prev).toEqual('https://example.com/foo?page=5');
     });
 
     it('returns first link', async () => {
+      nock('http://localhost')
+        .get('/link/first')
+        .reply(200, {}, { Link: '<https://example.com/foo?page=1>; rel="first"' });
+
       const response = await client.get('/link/first');
 
       expect(response.links.first).toEqual('https://example.com/foo?page=1');
     });
 
     it('returns last link', async () => {
+      nock('http://localhost')
+        .get('/link/last')
+        .reply(200, {}, { Link: '<https://example.com/foo?page=10>; rel="last"' });
+
       const response = await client.get('/link/last');
 
       expect(response.links.last).toEqual('https://example.com/foo?page=10');

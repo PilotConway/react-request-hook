@@ -75,7 +75,12 @@ export default function useEndpointData(path, options) {
       setLoading(true);
       try {
         const response = await client.get(currentEndpoint);
-        setValue(response.data);
+
+        if (response.ok) {
+          setValue(response.data);
+        } else {
+          setError(response);
+        }
 
         // If we aren't a paged response, then these will be null
         setNextLink(response.links.next);
@@ -90,11 +95,5 @@ export default function useEndpointData(path, options) {
     };
     load();
   }, [path, currentEndpoint, client]);
-  return [
-    value,
-    isLoading,
-    error,
-    { getNext, getPrevious, getFirst, getLast },
-    client,
-  ];
+  return [value, isLoading, error, { getNext, getPrevious, getFirst, getLast }, client];
 }

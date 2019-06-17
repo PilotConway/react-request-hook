@@ -15,7 +15,8 @@ export default function UsersList({ users, isLoading, error }) {
   }
 
   if (error || !Array.isArray(users)) {
-    return <Banner variant="error" message="An error occured loading users." />;
+    const message = (error || {}).statusText || 'An unknown error occured loading users. ';
+    return <Banner variant="error" message={message} />;
   }
 
   return (

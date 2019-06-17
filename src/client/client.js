@@ -36,6 +36,10 @@ const client = {
   /**
    * Runs a get operation on the provided path and returns the data.
    *
+   * @param {boolean} ok False if the response contains an error.
+   * @param {number} status The http status code of the response.
+   * @param {string} statusText A message if provided to describe the status response. Null if none
+   *                 was supplied.
    * @param {object|array} data The data from the server.
    * @param {AjaxResponse} rawResponse The RxJS AJAX Response object from the server.
    * @param {object} links The links object containing any link header URLS. All properties are
@@ -51,7 +55,10 @@ const client = {
     const links = processLinks(response);
 
     return {
+      ok: response.ok,
       data: response.response,
+      status: response.status,
+      statusText: (response.response || {}).message || response.message || null,
       rawResponse: response,
       links,
     };

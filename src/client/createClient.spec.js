@@ -1,11 +1,7 @@
 import createClient from './createClient';
-// Require get request import for mocks to work
-// eslint-disable-next-line no-unused-vars
-import getRequest from './getRequest';
+import nock from 'nock';
 
-// SEE __mocks__/getRequest for which endpoint paths result in what types of
-// responses from the getRequest().toPromise() method.
-jest.mock('./getRequest');
+nock.disableNetConnect();
 
 describe('createClient', () => {
   it('intializes', () => {
@@ -30,29 +26,63 @@ describe('createClient', () => {
 
   describe('get()', () => {
     it('createdClient getRequest creates full url from relative endpoint', async () => {
+      nock('https://example.com:443')
+        .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+        .get('/api/v2/foo')
+        .reply(200);
+
       const client = createClient('https://example.com/api/v2');
       const response = await client.get('foo');
 
-      expect(response.data).toEqual({ url: 'https://example.com/api/v2/foo' });
+      expect(response.rawResponse.xhr.responseURL).toEqual('https://example.com/api/v2/foo');
     });
 
     it('does not double leading /', async () => {
+      nock('https://example.com:443')
+        .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+        .get('/api/v2/foo')
+        .reply(200, { url: 'https://example.com/api/v2/foo' });
+
       const client = createClient('https://example.com/api/v2');
       const response = await client.get('/foo');
 
-      expect(response.data).toEqual({ url: 'https://example.com/api/v2/foo' });
+      expect(response.rawResponse.xhr.responseURL).toEqual('https://example.com/api/v2/foo');
     });
 
     it('does not modify full urls', async () => {
+      const gitHubScope = nock('https://github.com')
+        .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+        .get('/users')
+        .reply(200, { url: 'https://github.com/users' });
+
+      const exampleScope = nock('https://example.com')
+        .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+        .get('/api/v2/users')
+        .reply(404, { url: 'https://exmaple.com/api/v2/users' });
+
       const client = createClient('https://example.com/api/v2');
       const response = await client.get('https://github.com/users');
 
+      expect(gitHubScope.isDone()).toBe(true);
+      expect(exampleScope.isDone()).toBe(false);
+      expect(response.ok).toBe(true);
+      expect(response.status).toEqual(200);
       expect(response.data).toEqual({ url: 'https://github.com/users' });
     });
 
     it('rejects when when an error occurs', async () => {
+      nock('https://example.com')
+        .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+        .get('/api/v2/404')
+        .reply(404, { message: 'Not Found' });
+
       const client = createClient('https://example.com/api/v2');
-      expect(client.get('/404')).rejects.toThrow();
+      const response = await client.get('/404');
+
+      expect(response.ok).toBe(false);
+      expect(response.data).toEqual({ message: 'Not Found' });
+      expect(response.status).toEqual(404);
+      expect(response.statusText).toEqual('Not Found');
     });
   });
 });
