@@ -15,6 +15,7 @@
     "rxjs": "6.5.2"
   },
   "devDependencies": {
+    "codecov": "^3.5.0",
     "typescript": "3.3.3"
   },
   "scripts": {

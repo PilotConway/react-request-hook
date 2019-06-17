@@ -1,4 +1,6 @@
 import client from './client';
+// Require get request import for mocks to work
+// eslint-disable-next-line no-unused-vars
 import getRequest from './getRequest';
 
 // SEE __mocks__/getRequest for which endpoint paths result in what types of

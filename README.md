@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/PilotConway/rxjs-api-client-prototype.svg?branch=master)](https://travis-ci.com/PilotConway/rxjs-api-client-prototype) [![codecov](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype)
+
 # rxjs-api-client-prototype
 
 This is a prototype project to feel out ways I can use RxJS to replace the apps current server.js
@@ -24,7 +26,7 @@ import ClientProvider from 'src/ClientProvider';
 function Root() {
   const client = createClient('https://localhost:3000/api/v1');
   return (
-    <ClientProvider client={client}>
+    <ClientProvider value={client}>
       <App />
     </ClientProvider>
   );
@@ -41,6 +43,8 @@ the url as provided to make the call.
   )}
 </Request>
 ```
+
+By default, if you do not provide a client using the `ClientProvider` and use a realtive endpoint in `Request` or `useEndpointData` then a default client using `window.location.origin` as the base url will be used.
 
 ### Render Prop Method
 
@@ -71,7 +75,7 @@ import React from 'react';
 import useEndpointData from 'src/useEndpointData`;
 
 export default function MyComponent() {
-  const [ data, loading, error, links, client ] = useEndpointHooks('/users');
+  const [ data, loading, error, links, client ] = useEndpointHooks('/users', { params: { per_page: 5 }});
   return (
     ... your component jsx
   )
@@ -82,11 +86,50 @@ See [`useEndpointData`](#useEndpointData) for details on the hook parameters and
 
 ## API
 
-### `Client`
+### `client`
+
+This is base object that is used to make requests to the server. It is recommended that you do not create this object but instead use `createClient` to create a new client.
+
+Both `Request` and `useEndpointData` will also provide the client object so you can use it to make other requests to the server such as a put/post/delete.
+
+#### Functions
+
+The `client` object contains 4 functions that can be used to communicate with the server.
+
+- get
+- put
+- post
+- delete
+
+##### get()
+
+Performs a get request to the server.
 
 ### `createClient`
 
+This function creates a new client. It's preferred over using `client` itself as you can set the base URL and headers using `createClient` where with `client` you will have to pass full URLs to every request.
+
 ### `<ClientProvider>`
+
+The ClientProvider allows for a client to be set as the default client for all requests in the component tree below the provider. You can use [`createClient`](#createClient) to create a client with a specific base url then use relative endpoints in all `Request` or `useEndpointData` calls to get information from the server.
+
+In addition to being able to set the base url, you can also set headers and other information for every request to use.
+
+```js
+...
+import { createClient } from 'src/client';
+import ClientProvider from 'src/ClientProvider';
+...
+
+function Root() {
+  const client = createClient('https://localhost:3000/api/v1');
+  return (
+    <ClientProvider value={client}>
+      <App />
+    </ClientProvider>
+  );
+}
+```
 
 ### `useEndpointData`
 
@@ -144,6 +187,8 @@ The render function is called with a single parameter object that has the follow
   other requests to the server.
 
 ### Request Error
+
+TODO: define request error and ensure all errors follow this format.
 
 ### Pagination
 
