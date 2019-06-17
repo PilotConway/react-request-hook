@@ -4,5 +4,5 @@ workflow "Build on Pull Request" {
 }
 
 action "eslint" {
-  uses = "gimenete/eslint-action@1.0"
+  uses = "stefanoeb/eslint-action@master"
 }
