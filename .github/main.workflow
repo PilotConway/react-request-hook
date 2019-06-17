@@ -1,6 +1,6 @@
-workflow "Build on Pull Request" {
+workflow "Link on Push" {
   resolves = ["eslint"]
-  on = "pull_request"
+  on = "push"
 }
 
 action "eslint" {
