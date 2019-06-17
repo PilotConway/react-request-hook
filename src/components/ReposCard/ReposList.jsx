@@ -13,7 +13,8 @@ export default function ReposList({ repos, isLoading, error }) {
   }
 
   if (error || !Array.isArray(repos)) {
-    return <Banner variant="error" message="An error occured loading repos." />;
+    const message = (error || {}).statusText || 'An unknown error occured loading users. ';
+    return <Banner variant="error" message={message} />;
   }
 
   return (

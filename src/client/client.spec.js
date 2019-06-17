@@ -20,8 +20,24 @@ describe('raw client', () => {
     });
   });
 
-  it('rejects when when an error occurs', async () => {
-    expect(client.get('/404')).rejects.toThrow();
+  it('responds with an error response when when an error from the server occurs', async () => {
+    const response = await client.get('/404');
+    expect(response.ok).toBe(false);
+    expect(response.data).toEqual({ message: 'Not Found' });
+    expect(response.status).toEqual(404);
+    expect(response.statusText).toEqual('Not Found');
+  });
+
+  it('Has no statusText when no message is in the response', async () => {
+    const response = await client.get('/500');
+    expect(response.ok).toBe(false);
+    expect(response.data).toEqual([]);
+    expect(response.status).toEqual(500);
+    expect(response.statusText).toEqual(null);
+  });
+
+  it('rejects when when an error occurs in the client', async () => {
+    expect(client.get('/client_error')).rejects.toThrow();
   });
 
   describe('links', () => {

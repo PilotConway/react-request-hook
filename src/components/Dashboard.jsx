@@ -18,13 +18,9 @@ export default function Dashboard() {
   const [users, loading, error] = useEndpointData(
     `https://api.github.com/usersdsafasdfa?per_page=5`,
   );
+
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      justifyContent="space-between"
-      flexWrap="wrap"
-    >
+    <Box display="flex" flexDirection="row" justifyContent="space-between" flexWrap="wrap">
       <Box width={{ xs: '100%', md: 350 }} m={2}>
         <UsersCard />
       </Box>

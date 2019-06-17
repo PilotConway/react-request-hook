@@ -8,9 +8,11 @@ const getRequest = path =>
       if (response === null) {
         return throwError('API Timed out', response);
       }
+      response.ok = true;
       return response;
     }),
     catchError(error => {
+      error.ok = false;
       return of(error);
     }),
   );
