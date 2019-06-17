@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/PilotConway/rxjs-api-client-prototype.svg?branch=master)](https://travis-ci.com/PilotConway/rxjs-api-client-prototype)
+
 # rxjs-api-client-prototype
 
 This is a prototype project to feel out ways I can use RxJS to replace the apps current server.js
