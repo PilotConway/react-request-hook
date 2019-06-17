@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/PilotConway/rxjs-api-client-prototype.svg?branch=master)](https://travis-ci.com/PilotConway/rxjs-api-client-prototype)
+[![Build Status](https://travis-ci.com/PilotConway/rxjs-api-client-prototype.svg?branch=master)](https://travis-ci.com/PilotConway/rxjs-api-client-prototype) [![codecov](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype)
 
 # rxjs-api-client-prototype
 
