@@ -58,7 +58,7 @@ const client = {
       ok: response.ok,
       data: response.response,
       status: response.status,
-      statusText: response.response.message || response.message || null,
+      statusText: (response.response || {}).message || response.message || null,
       rawResponse: response,
       links,
     };
