@@ -6,4 +6,5 @@ workflow "Build on Pull Request" {
 action "Codecov Action" {
   uses = "Atrox/codecov-action@v0.1.3"
   secrets = ["API_CLIENT_CODECOV_TOKEN"]
+  runs = "yarn test"
 }
