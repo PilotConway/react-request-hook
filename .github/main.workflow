@@ -1,5 +1,5 @@
 workflow "Build on Pull Request" {
-  resolves = ["Codecov Action"]
+  resolves = ["eslint"]
   on = "pull_request"
 }
 
