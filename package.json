@@ -1,6 +1,6 @@
 {
-  "name": "rxjs-rest-api-with-hooks",
-  "version": "1.0.0",
+  "name": "@pilotconway/react-request-hook",
+  "version": "2019.1",
   "description": "Prototyping a rest api using RxJS ajax and hooks. This project is helping me test out some ideas before we write the new implementation. ",
   "keywords": [],
   "main": "src/index.js",
