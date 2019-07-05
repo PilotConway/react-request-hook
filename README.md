@@ -1,9 +1,8 @@
 [![Build Status](https://travis-ci.com/PilotConway/rxjs-api-client-prototype.svg?branch=master)](https://travis-ci.com/PilotConway/rxjs-api-client-prototype) [![codecov](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype)
 
-# rxjs-api-client-prototype
+# react-request-hook
 
-This is a prototype project to feel out ways I can use RxJS to replace the apps current server.js
-fetch API, and provide a single interface for paged and non-paged REST calls.
+A simple RESTful request API using RxJS ajax and React hooks. This was born out of a prototype project to test using RxJS to fet data, and allow simple support for dealing with paged endpoints. 
 
 This is a work in progress and is not intended for production at this time.
 
