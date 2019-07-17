@@ -23,17 +23,6 @@
  * function. You can call these functions to get the first, last, next or previous pages.
  * Under the hood it's using the Link header urls to run a new request to get to that page.
  *
- * ## TODO
- *
- * Right now we are just passing the entire URL in as the endpoint, but, in production environments, we should
- * instead pull the client object from a provider in the hook and then be able to setup the client with
- * the url endpoints, headers, sessions, etc... for all client requests. This way, we can just pass something
- * like `/users` as the endpoint and it will know where to go.
- *
- * For browsers, this should be simpler because we will already have the domain and port, but, since this code will
- * have to run in electron, we will also have other mechanisms to pass in the domain or change the domain based on
- * which backend server (primary or secondary) we are connected to.
- *
  */
 // import React from 'react';
 import PropTypes from 'prop-types';
@@ -91,6 +80,6 @@ Request.defaultProps = {
 };
 
 export default function Request({ endpoint, params, options, children }) {
-  const [data, loading, error, links, client] = useEndpointData(endpoint);
+  const [data, loading, error, links, client] = useEndpointData(endpoint, { ...options, params });
   return children({ data, loading, error, links, client });
 }

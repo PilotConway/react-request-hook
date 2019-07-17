@@ -1,0 +1,9 @@
+/dist
+/scripts
+/node_modules
+/.github
+/coverage
+/.vscode
+babel.config.js
+jest.config.js
+rollup.config.js
