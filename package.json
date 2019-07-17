@@ -1,34 +1,29 @@
 {
   "name": "@pilotconway/react-request-hook",
-  "version": "0.1.0-alpha1",
-  "description": "Prototyping a rest api using RxJS ajax and hooks. This project is helping me test out some ideas before we write the new implementation. ",
+  "version": "0.1.0-alpha2",
+  "description": "Library for communicating with a RESTful server using React Hooks.",
   "keywords": [],
   "main": "src/index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "peerDependencies": {
+    "react": "16.8.6",
+    "prop-types": "15.7.2",
+    "react-dom": "16.8.6",
+    "rxjs": "6.5.2"
+  },
   "dependencies": {
     "@material-ui/core": "4.0.2",
     "@material-ui/icons": "^4.1.0",
-    "color": "3.1.2",
-    "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
-    "react-scripts": "3.0.1",
-    "rxjs": "6.5.2"
+    "color": "3.1.2"
   },
   "devDependencies": {
     "codecov": "^3.5.0",
-    "nock": "^10.0.6",
-    "typescript": "3.3.3"
+    "nock": "^10.0.6"
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --coverage",
-    "eject": "react-scripts eject"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "test": "jest"
+  }
 }
