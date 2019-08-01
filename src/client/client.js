@@ -1,4 +1,4 @@
-import getRequest from './getRequest';
+import axios from 'axios';
 
 const linkParseRegex = /<(.+?)>; rel="(.*)"/;
 
@@ -61,7 +61,6 @@ const client = {
     // TODO: Try catch here. If error.response then server responded bad.
     // If error.request Then server didn't response
     // Else, something bad happened creating the request
-    // const response = await getRequest(path, options).toPromise();
     // let response = {
     //   ok: false,
     //   data: null,
@@ -72,7 +71,7 @@ const client = {
     // };
 
     try {
-      const response = await getRequest(path, options);
+      const response = await axios.get(path, options);
       const links = processLinks(response);
       return {
         ok: true,

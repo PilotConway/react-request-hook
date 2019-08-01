@@ -25,7 +25,7 @@ describe('createClient', () => {
   });
 
   describe('get()', () => {
-    it('createdClient getRequest creates full url from relative endpoint', async () => {
+    it('createdClient get creates full url from relative endpoint', async () => {
       nock('https://example.com:443')
         .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
         .get('/api/v2/foo')

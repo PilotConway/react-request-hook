@@ -5,7 +5,7 @@ import nock from 'nock';
 nock.disableNetConnect();
 
 describe('raw client', () => {
-  it('calls getRequest and returns data', async () => {
+  it('calls axios get and returns data', async () => {
     nock('http://localhost')
       .get('/foo')
       .reply(200, { bar: 'baz' });

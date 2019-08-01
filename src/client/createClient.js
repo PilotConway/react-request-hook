@@ -3,6 +3,8 @@ import client from './client';
 /**
  * This is a wrapper around client that allows for a base URL to be set once and then use realtive
  * endpoints from then on.
+ *
+ * TODO: axios will just handle this for us if we create an instance then pass that around.
  */
 class WrappedClient {
   /**
