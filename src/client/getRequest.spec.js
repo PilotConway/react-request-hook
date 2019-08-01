@@ -9,9 +9,8 @@ describe('getRequest', () => {
       .get('/foo')
       .reply(200, data);
 
-    const response = await getRequest('http://localhost/foo').toPromise();
-    expect(response.ok).toBe(true);
-    expect(response.response).toEqual(data);
+    const response = await getRequest('http://localhost/foo');
+    expect(response.data).toEqual(data);
     expect(response.status).toBe(200);
   });
 
@@ -21,9 +20,11 @@ describe('getRequest', () => {
       .get('/foo')
       .reply(500, data);
 
-    const response = await getRequest('http://localhost/foo').toPromise();
-    expect(response.ok).toBe(false);
-    expect(response.response).toEqual(data);
-    expect(response.status).toBe(500);
+    try {
+      await getRequest('http://localhost/foo');
+    } catch (error) {
+      expect(error.response.data).toEqual(data);
+      expect(error.response.status).toBe(500);
+    }
   });
 });

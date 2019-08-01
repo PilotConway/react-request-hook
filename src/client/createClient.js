@@ -30,9 +30,7 @@ class WrappedClient {
     }
 
     if (!baseUrl.startsWith('http')) {
-      return `${window.location.origin}${
-        baseUrl.startsWith('/') ? '' : '/'
-      }${baseUrl}`;
+      return `${window.location.origin}${baseUrl.startsWith('/') ? '' : '/'}${baseUrl}`;
     }
     return baseUrl;
   }
@@ -66,9 +64,9 @@ class WrappedClient {
    *
    * @see src/client/client.js:get for usage of this function.
    */
-  get = (endpoint, ...params) => {
+  get = (endpoint, options) => {
     const url = this.buildUrl(endpoint);
-    return client.get(url, ...params);
+    return client.get(url, options);
   };
 }
 

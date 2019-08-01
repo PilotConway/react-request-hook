@@ -23,6 +23,7 @@ const defaultOptions = {
   // TODO: deprecate: this doesn't really make sense, just make it null
   emptyValue: [],
   params: {},
+  headers: {},
 };
 
 export default function useEndpointData(path, options) {
@@ -74,7 +75,7 @@ export default function useEndpointData(path, options) {
     const load = async () => {
       setLoading(true);
       try {
-        const response = await client.get(currentEndpoint);
+        const response = await client.get(currentEndpoint, options);
 
         if (response.ok) {
           setValue(response.data);

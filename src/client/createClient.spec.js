@@ -34,7 +34,7 @@ describe('createClient', () => {
       const client = createClient('https://example.com/api/v2');
       const response = await client.get('foo');
 
-      expect(response.rawResponse.xhr.responseURL).toEqual('https://example.com/api/v2/foo');
+      expect(response.config.url).toEqual('https://example.com/api/v2/foo');
     });
 
     it('does not double leading /', async () => {
@@ -46,7 +46,7 @@ describe('createClient', () => {
       const client = createClient('https://example.com/api/v2');
       const response = await client.get('/foo');
 
-      expect(response.rawResponse.xhr.responseURL).toEqual('https://example.com/api/v2/foo');
+      expect(response.config.url).toEqual('https://example.com/api/v2/foo');
     });
 
     it('does not modify full urls', async () => {
