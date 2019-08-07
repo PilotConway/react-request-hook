@@ -39,8 +39,10 @@ const client = {
    * Runs a get operation on the provided path and returns the data.
    *
    * @param {string} path The complete URL of the endpoint to get.
-   * @param {object} options Options for the request
-   * @param {object} options.param Key/value pairs of parameters to pass to the request.
+   * @param {object} options Options for the request. See
+   *  https://github.com/axios/axios#request-config for all valid properties that can be sent
+   *  in the options object.
+   * @param {object} options.params Key/value pairs of parameters to pass to the request.
    * @param {object} options.headers Key/value pairs of headers to set on the request
    * @param {axios} instance (optional) Used to pass a custom axios instance to use instead of the
    *  global one.
@@ -51,7 +53,6 @@ const client = {
    *  * {string} statusText A message if provided to describe the status response. Null if none
    *  *               was supplied.
    *  * {object|array} data The data from the server.
-   *  * {AjaxResponse} rawResponse The RxJS AJAX Response object from the server.
    *  * {object} links The links object containing any link header URLS. All properties are
    *             guranteed to be present, but will be set to null if the link does not exist
    *             in the header. Otherwise, it will be set to the string URL value.
@@ -59,6 +60,8 @@ const client = {
    *  * {string} links.prev The URL to get the previous page.
    *  * {string} links.first The URL to get the first page.
    *  * {string} links.last The URL to get the last page.
+   *  * See [https://github.com/axios/axios#response-schema]() for other properties sent in the
+   *    request object.
    */
   get: async (path, options, instance) => {
     // let response = {
