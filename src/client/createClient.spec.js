@@ -6,22 +6,22 @@ nock.disableNetConnect();
 describe('createClient', () => {
   it('intializes', () => {
     const client = createClient('https://example.com/foo');
-    expect(client.getBaseUrl()).toBe('https://example.com/foo');
+    expect(client.axiosInstance.defaults.baseURL).toBe('https://example.com/foo');
   });
 
   it('intializes with browser url when no baseUrl is passed', () => {
     const client = createClient();
-    expect(client.getBaseUrl()).toBe('http://localhost');
+    expect(client.axiosInstance.defaults.baseURL).toBe('http://localhost');
   });
 
   it('intializes with browser url and prefix', () => {
     const client = createClient('/api/v2');
-    expect(client.getBaseUrl()).toBe('http://localhost/api/v2');
+    expect(client.axiosInstance.defaults.baseURL).toBe('http://localhost/api/v2');
   });
 
   it('intializes with browser url and prefix with no leading /', () => {
     const client = createClient('api/v2');
-    expect(client.getBaseUrl()).toBe('http://localhost/api/v2');
+    expect(client.axiosInstance.defaults.baseURL).toBe('http://localhost/api/v2');
   });
 
   describe('get()', () => {

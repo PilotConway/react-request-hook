@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const linkParseRegex = /<(.+?)>; rel="(.*)"/;
+const emptyLinks = { first: null, last: null, prev: null, next: null };
 
 /**
  * Processes the Link header and splits the data into the two links
@@ -13,7 +14,7 @@ function processLinks(response) {
   const linkHeader = response.headers.link;
   // Set the links to null by default. If they exist on the link header then they will
   // be added.
-  let links = { first: null, last: null, prev: null, next: null };
+  let links = { ...emptyLinks };
 
   if (linkHeader) {
     /*
@@ -41,6 +42,8 @@ const client = {
    * @param {object} options Options for the request
    * @param {object} options.param Key/value pairs of parameters to pass to the request.
    * @param {object} options.headers Key/value pairs of headers to set on the request
+   * @param {axios} instance (optional) Used to pass a custom axios instance to use instead of the
+   *  global one.
    *
    * @return {object} With the following properties:
    *  * {boolean} ok False if the response contains an error.
@@ -57,10 +60,7 @@ const client = {
    *  * {string} links.first The URL to get the first page.
    *  * {string} links.last The URL to get the last page.
    */
-  get: async (path, options) => {
-    // TODO: Try catch here. If error.response then server responded bad.
-    // If error.request Then server didn't response
-    // Else, something bad happened creating the request
+  get: async (path, options, instance) => {
     // let response = {
     //   ok: false,
     //   data: null,
@@ -69,9 +69,10 @@ const client = {
     //   rawResponse: null,
     //   links: undefined,
     // };
+    const axiosInstance = instance || axios;
 
     try {
-      const response = await axios.get(path, options);
+      const response = await axiosInstance.get(path, options);
       const links = processLinks(response);
       return {
         ok: true,
@@ -82,15 +83,20 @@ const client = {
       if (error.response) {
         return {
           ok: false,
+          links: { ...emptyLinks },
           ...error.response,
           statusText:
-            error.response.statusText ||
             error.response.message ||
             (error.response.data || {}).message ||
+            ((error.response.data || {}).error || {}).message ||
+            error.response.statusText ||
             null,
         };
       }
       // TODO handle no server errors and request build errors
+      // TODO: Try catch here. If error.response then server responded bad.
+      // If error.request Then server didn't response
+      // Else, something bad happened creating the request
     }
   },
 };
