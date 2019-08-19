@@ -1,20 +1,28 @@
+import axios from 'axios';
 import client from './client';
 
 /**
  * This is a wrapper around client that allows for a base URL to be set once and then use realtive
  * endpoints from then on.
+ *
+ * TODO: axios will just handle this for us if we create an instance then pass that around.
  */
 class WrappedClient {
   /**
    *
-   * @param {string} baseUrl (optional) Sets the baseUrl for all requests so you can call client
+   * @param {string} baseURL (optional) Sets the baseUrl for all requests so you can call client
    * methods using only the relative path to this base url. If no baseUrl is set, it will be set
    * to `window.location.origin` If this base URL is not a full url, then it will be used as a
    * prefix appended to `window.location.origin.
    * Eg: new WrappedClient('/api') => https://localhost/api
+   * @param {object} options Options passed to the axios instance. See
+   * https://github.com/axios/axios#request-config for information on available options
    */
-  constructor(baseUrl) {
-    this.baseUrl = this.buildBaseUrl(baseUrl);
+  constructor(baseURL, options = {}) {
+    this.axiosInstance = axios.create({
+      baseURL: this.buildBaseUrl(baseURL),
+      ...options,
+    });
   }
 
   /**
@@ -30,34 +38,10 @@ class WrappedClient {
     }
 
     if (!baseUrl.startsWith('http')) {
-      return `${window.location.origin}${
-        baseUrl.startsWith('/') ? '' : '/'
-      }${baseUrl}`;
+      return `${window.location.origin}${baseUrl.startsWith('/') ? '' : '/'}${baseUrl}`;
     }
     return baseUrl;
   }
-
-  /**
-   * @returns {string} The current base URL for all client requests.
-   */
-  getBaseUrl = () => {
-    return this.baseUrl;
-  };
-
-  /**
-   * Builds a url by taking the provided endpoint and prepending with the base Url if needed.
-   * If the passed endpoint is a full URL, then it will be return unmodified.
-   *
-   * @param {string} endpoint The endpoint to build a URL from.
-   * @returns {string} Full URL for the request.
-   */
-  buildUrl = endpoint => {
-    if (endpoint.startsWith('http')) {
-      return endpoint;
-    }
-
-    return `${this.baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
-  };
 
   /**
    * Wrapps client.get by inspecting the endpoint, if it begins with http then it will  just pass
@@ -66,12 +50,18 @@ class WrappedClient {
    *
    * @see src/client/client.js:get for usage of this function.
    */
-  get = (endpoint, ...params) => {
-    const url = this.buildUrl(endpoint);
-    return client.get(url, ...params);
+  get = (endpoint, options) => {
+    return client.get(endpoint, options, this.axiosInstance);
+  };
+
+  /**
+   * TODO: initial post, not full implementation
+   */
+  post = async (endpoint, data, options) => {
+    return await this.axiosInstance.post(endpoint, data, options);
   };
 }
 
-export default function createClient(baseUrl) {
-  return new WrappedClient(baseUrl);
+export default function createClient(baseUrl, options = {}) {
+  return new WrappedClient(baseUrl, options);
 }

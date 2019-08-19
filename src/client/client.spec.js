@@ -5,7 +5,7 @@ import nock from 'nock';
 nock.disableNetConnect();
 
 describe('raw client', () => {
-  it('calls getRequest and returns data', async () => {
+  it('calls axios get and returns data', async () => {
     nock('http://localhost')
       .get('/foo')
       .reply(200, { bar: 'baz' });
@@ -32,14 +32,15 @@ describe('raw client', () => {
   });
 
   it('Has statusText set to ajax error messsage when no message is in the response', async () => {
+    // TODO this isn't the same with axios, so get a better statusText
     nock('http://localhost')
       .get('/500')
       .reply(500);
     const response = await client.get('http://localhost/500');
     expect(response.ok).toBe(false);
-    expect(response.data).toEqual(null);
+    expect(response.data).toEqual('');
     expect(response.status).toEqual(500);
-    expect(response.statusText).toEqual('ajax error 500');
+    expect(response.statusText).toEqual(null);
   });
 
   describe('links', () => {

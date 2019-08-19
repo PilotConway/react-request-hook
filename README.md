@@ -2,7 +2,9 @@
 
 # react-request-hook
 
-A simple RESTful request API using RxJS ajax and React hooks. This was born out of a prototype project to test using RxJS to fet data, and allow simple support for dealing with paged endpoints. 
+A simple RESTful request API using [axios](https://github.com/axios/axios) and React hooks. This was
+born out of a prototype project to test using hooks to fetch data, and allow simple support for
+dealing with paged endpoints.
 
 This is a work in progress and is not intended for production at this time.
 
@@ -219,5 +221,6 @@ Work still to be done or is in progress
       document usage and options and the different ways I think this API will be used in the app.
 - [ ] PropTypes. I need to ensure all Prop Types for non test Component code is documentated and
       added with defaults as required.
+- [ ] Document axios options and where they can be used.
 
-Created with CodeSandbox
+Created _initially_ with CodeSandbox

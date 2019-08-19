@@ -6,26 +6,26 @@ nock.disableNetConnect();
 describe('createClient', () => {
   it('intializes', () => {
     const client = createClient('https://example.com/foo');
-    expect(client.getBaseUrl()).toBe('https://example.com/foo');
+    expect(client.axiosInstance.defaults.baseURL).toBe('https://example.com/foo');
   });
 
   it('intializes with browser url when no baseUrl is passed', () => {
     const client = createClient();
-    expect(client.getBaseUrl()).toBe('http://localhost');
+    expect(client.axiosInstance.defaults.baseURL).toBe('http://localhost');
   });
 
   it('intializes with browser url and prefix', () => {
     const client = createClient('/api/v2');
-    expect(client.getBaseUrl()).toBe('http://localhost/api/v2');
+    expect(client.axiosInstance.defaults.baseURL).toBe('http://localhost/api/v2');
   });
 
   it('intializes with browser url and prefix with no leading /', () => {
     const client = createClient('api/v2');
-    expect(client.getBaseUrl()).toBe('http://localhost/api/v2');
+    expect(client.axiosInstance.defaults.baseURL).toBe('http://localhost/api/v2');
   });
 
   describe('get()', () => {
-    it('createdClient getRequest creates full url from relative endpoint', async () => {
+    it('createdClient get creates full url from relative endpoint', async () => {
       nock('https://example.com:443')
         .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
         .get('/api/v2/foo')
@@ -34,7 +34,7 @@ describe('createClient', () => {
       const client = createClient('https://example.com/api/v2');
       const response = await client.get('foo');
 
-      expect(response.rawResponse.xhr.responseURL).toEqual('https://example.com/api/v2/foo');
+      expect(response.config.url).toEqual('https://example.com/api/v2/foo');
     });
 
     it('does not double leading /', async () => {
@@ -46,7 +46,7 @@ describe('createClient', () => {
       const client = createClient('https://example.com/api/v2');
       const response = await client.get('/foo');
 
-      expect(response.rawResponse.xhr.responseURL).toEqual('https://example.com/api/v2/foo');
+      expect(response.config.url).toEqual('https://example.com/api/v2/foo');
     });
 
     it('does not modify full urls', async () => {
