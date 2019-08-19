@@ -53,6 +53,13 @@ class WrappedClient {
   get = (endpoint, options) => {
     return client.get(endpoint, options, this.axiosInstance);
   };
+
+  /**
+   * TODO: initial post, not full implementation
+   */
+  post = async (endpoint, data, options) => {
+    return await this.axiosInstance.post(endpoint, data, options);
+  };
 }
 
 export default function createClient(baseUrl, options = {}) {
