@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: ESLint checks
-        uses: gimenete/eslint-action@1.0t
+        uses: gimenete/eslint-action@1.0
 
   test:
     runs-on: ubuntu-latest
@@ -17,8 +17,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - uses: stefanoeb/eslint-action@master
-      - run: eslint
       - run: yarn
       - run: yarn test --coverage
       - name: Upload coverage to Codecov
