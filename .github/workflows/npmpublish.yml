@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: cd dist/ && npm publish
+      - run: cd dist/ && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
@@ -42,4 +42,4 @@ jobs:
           scope: '@pilotconway'
       - run: cd dist/ && npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_PACKAGE_REGISTRY_TOKEN}}
