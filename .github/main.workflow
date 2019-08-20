@@ -1,6 +1,9 @@
-workflow "Link on Push" {
-  resolves = ["eslint"]
-  on = "push"
+workflow "Lint on Push" {
+  on       = "push"
+
+  resolves = [
+    "eslint"
+  ]
 }
 
 action "eslint" {
