@@ -1,0 +1,53 @@
+name: Node.js Package
+
+on:
+  push:
+    branches:
+      - release/*
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn
+      - run: yarn test --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1.0.0
+        with:
+          token: ${{secrets.API_CLIENT_CODECOV_TOKEN}}
+          flags: publish
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: cd dist/ && yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
+          scope: '@pilotconway'
+      - run: yarn
+      - run: yarn build
+      - run: cd dist/ && yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_PACKAGE_REGISTRY_TOKEN}}
