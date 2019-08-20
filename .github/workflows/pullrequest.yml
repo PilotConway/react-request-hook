@@ -7,11 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - uses: stefanoeb/eslint-action@master
-      - run: eslint
+      - name: ESLint checks
+        uses: gimenete/eslint-action@1.0t
 
   test:
     runs-on: ubuntu-latest
