@@ -1,5 +1,12 @@
 language: node_js
 node_js:
   - '10'
+script: echo 'Starting Build'
+  echo 'Installing deps'
+  yarn
+  echo 'Building'
+  yarn build
+  echo 'Running tests'
+  yarn test --coverage
 after_success:
   - yarn codecov
