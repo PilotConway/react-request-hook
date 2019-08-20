@@ -56,6 +56,9 @@ function processLinks(response) {
  *    request object.
  */
 function processError(error) {
+  // If error.response then server responded bad.
+  // If error.request Then server didn't respond
+  // Else, something bad happened creating the request
   if (error.response) {
     return {
       ok: false,
@@ -68,18 +71,42 @@ function processError(error) {
         error.response.statusText ||
         null,
     };
+  } else if (error.request) {
+    const response = {
+      ok: false,
+      links: { ...emptyLinks },
+      statusText: '',
+      data: null,
+      request: error.request,
+      code: error.code,
+    };
+
+    switch (error.code) {
+      case 'ENETUNREACH':
+      case 'ENOTFOUND': {
+        response.statusText = 'The server could not be reached or the URL was invalid.';
+        break;
+      }
+      case 'ECONNABORTED': {
+        response.statusText = `Connection was aborted: ${error.message}`;
+        break;
+      }
+      default: {
+        response.statusText =
+          error.message ||
+          'An unknown error occured making the request and we could not communicate with the server';
+      }
+    }
+
+    return response;
   }
 
   return {
     ok: false,
     links: { ...emptyLinks },
-    statusText: 'An Unknown error occurred with the Request',
+    statusText: error.message || 'An Unknown error occurred with the Request',
     data: null,
   };
-  // TODO handle no server errors and request build errors
-  // TODO: Try catch here. If error.response then server responded bad.
-  // If error.request Then server didn't response
-  // Else, something bad happened creating the request
 }
 
 const client = {
@@ -112,14 +139,6 @@ const client = {
    *    request object.
    */
   get: async (path, options, instance) => {
-    // let response = {
-    //   ok: false,
-    //   data: null,
-    //   status: 0,
-    //   statusText: null,
-    //   rawResponse: null,
-    //   links: undefined,
-    // };
     const axiosInstance = instance || axios;
 
     try {
@@ -157,17 +176,10 @@ const client = {
    *    request object.
    */
   post: async (path, data, options, instance) => {
-    // let response = {
-    //   ok: false,
-    //   data: null,
-    //   status: 0,
-    //   statusText: null,
-    //   rawResponse: null,
-    // };
     const axiosInstance = instance || axios;
 
     try {
-      const response = await axiosInstance.post(path, options);
+      const response = await axiosInstance.post(path, data, options);
       return {
         ok: true,
         ...response,
