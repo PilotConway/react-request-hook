@@ -3,8 +3,9 @@ name: Node.js Package
 on:
   push:
     branches:
-      - master
       - release/*
+    tags:
+      - v*
 
 jobs:
   build:
@@ -45,6 +46,7 @@ jobs:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
           scope: '@pilotconway'
+      - run: yarn
       - run: yarn build
       - run: cd dist/ && yarn publish
         env:
