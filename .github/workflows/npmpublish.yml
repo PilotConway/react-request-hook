@@ -16,7 +16,11 @@ jobs:
           node-version: 12
       - run: yarn
       - run: yarn test --coverage
-      - run: yarn build
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1.0.0
+        with:
+          token: ${{secrets.API_CLIENT_CODECOV_TOKEN}}
+          flags: publish
 
   publish-npm:
     needs: build
@@ -41,6 +45,7 @@ jobs:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
           scope: '@pilotconway'
+      - run: yarn build
       - run: cd dist/ && yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_PACKAGE_REGISTRY_TOKEN}}
