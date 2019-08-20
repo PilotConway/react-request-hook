@@ -1,7 +1,8 @@
 language: node_js
 node_js:
   - '10'
-script: echo 'Starting Build'
+script:
+  - echo 'Starting Build'
   - echo 'Building'
   - yarn build
   - echo 'Running tests'
