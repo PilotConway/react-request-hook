@@ -134,6 +134,48 @@ const client = {
       return processError(error);
     }
   },
+  /**
+   * Runs a POST operation on the provided path and returns the data.
+   *
+   * @param {string} path The complete URL of the endpoint to post.
+   * @param {object} data The data to post to the server.
+   * @param {object} options Options for the request. See
+   *  https://github.com/axios/axios#request-config for all valid properties that can be sent
+   *  in the options object.
+   * @param {object} options.params Key/value pairs of parameters to pass to the request.
+   * @param {object} options.headers Key/value pairs of headers to set on the request
+   * @param {axios} instance (optional) Used to pass a custom axios instance to use instead of the
+   *  global one.
+   *
+   * @return {object} With the following properties:
+   *  * {boolean} ok False if the response contains an error.
+   *  * {number} status The http status code of the response.
+   *  * {string} statusText A message if provided to describe the status response. Null if none
+   *  *               was supplied.
+   *  * {object|array} data The data from the server.
+   *  * See [https://github.com/axios/axios#response-schema]() for other properties sent in the
+   *    request object.
+   */
+  post: async (path, data, options, instance) => {
+    // let response = {
+    //   ok: false,
+    //   data: null,
+    //   status: 0,
+    //   statusText: null,
+    //   rawResponse: null,
+    // };
+    const axiosInstance = instance || axios;
+
+    try {
+      const response = await axiosInstance.post(path, options);
+      return {
+        ok: true,
+        ...response,
+      };
+    } catch (error) {
+      return processError(error);
+    }
+  },
 };
 
 export default client;

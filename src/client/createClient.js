@@ -5,7 +5,7 @@ import client from './client';
  * This is a wrapper around client that allows for a base URL to be set once and then use realtive
  * endpoints from then on.
  *
- * TODO: axios will just handle this for us if we create an instance then pass that around.
+ * This is just a light wrapper around an axios instance.
  */
 class WrappedClient {
   /**
@@ -55,10 +55,14 @@ class WrappedClient {
   };
 
   /**
-   * TODO: initial post, not full implementation
+   * Wrapps client.post by inspecting the endpoint, if it begins with http then it will  just pass
+   * the entire url directly to client with no modification, otherwise it will prepend the base
+   * url to the endpoint then call client.post().
+   *
+   * @see src/client/client.js:post for usage of this function.
    */
-  post = async (endpoint, data, options) => {
-    return await this.axiosInstance.post(endpoint, data, options);
+  post = (endpoint, data, options) => {
+    return client.post(endpoint, data, options, this.axiosInstance);
   };
 }
 
