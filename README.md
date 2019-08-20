@@ -3,7 +3,7 @@
   <a href="https://github.com/PilotConway/react-request-hook/actions"><img alt="GitHub Actions status" src="https://github.com/PilotConway/react-request-hook/workflows/Build/badge.svg"></a>
 </p>
 
-[![codecov](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype)
+[![codecov](https://codecov.io/gh/PilotConway/react-request-hook/branch/master/graph/badge.svg)](https://codecov.io/gh/PilotConway/react-request-hook)
 
 # react-request-hook
 
