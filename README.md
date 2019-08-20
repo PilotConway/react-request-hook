@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/PilotConway/rxjs-api-client-prototype.svg?branch=master)](https://travis-ci.com/PilotConway/rxjs-api-client-prototype) [![codecov](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/PilotConway/rxjs-api-client-prototype)
 <p>
-  <a href="https://github.com/PilotConway/react-request-hook"><img alt="GitHub Actions status" src="https://github.com/PilotConway/react-request-hook/Build/badge.svg"></a>
+  <a href="https://github.com/PilotConway/react-request-hook"><img alt="GitHub Actions status" src="https://github.com/PilotConway/react-request-hook/workflows/Build/badge.svg"></a>
 </p>
 
 # react-request-hook
